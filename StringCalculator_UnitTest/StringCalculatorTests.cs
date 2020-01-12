@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using StringCalculator_Library;
+using System;
 
 namespace StringCalculator_UnitTest
 {
@@ -67,5 +68,18 @@ namespace StringCalculator_UnitTest
         [TestCase("//*\n1,2,3\n4,5*1*0", ExpectedResult = 16)]
         [TestCase("1,4,3\n6,3\n3\n2", ExpectedResult = 22)]
         public int Calculator_WhenDelimitersSpecified_ReturnsSumOfNumbers(string input) => stringCalculator.Add(input);
+
+        [Test]
+        [TestCase("-1,2,4,6,4,8")]
+        [TestCase("-1,-4,5\n8,4")]
+        [TestCase("//*\n1,-2,3\n4,5*-1*0")]
+        public void Calculator_WhenNegativeNumbers_ThrowsException(string input)
+        {
+            Assert.Throws<FormatException>(() => stringCalculator.Add(input));
+        }
+
+        [Test]
+        [TestCase("1005,2,5", ExpectedResult = 7)]
+        public int Calculator_WhenGreaterThan1000_ReturnsSumOfNumbersExcluding1000(string input) => stringCalculator.Add(input);
     }
 }

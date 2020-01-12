@@ -24,10 +24,19 @@ namespace StringCalculator_Library
                 }
 
                 var numberArray = numbers.Split(defaultDelimiters.ToArray(), StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToList();
+                var negativeNumbers = string.Join(",", numberArray.Where(x => x < 0).Select(x => x.ToString()).ToArray());
 
+                if (negativeNumbers == null || negativeNumbers.Length > 0)
+                {
+                    throw new FormatException($"negatives not allowed '{negativeNumbers}'");
+                }
+                
                 foreach (int num in numberArray)
                 {
-                    sum += num;
+                    if (num <= 1000)
+                    {
+                        sum += num;
+                    }
                 }
             }
 
